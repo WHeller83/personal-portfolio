@@ -1,13 +1,12 @@
 {
-  "name": "Gatsby Starter For Portfolio Minimal",
-  "email": "example@mail.com",
+  "name": "Will Heller's Online Portfolio",
   "description": "If you have any problems with this theme, create an issue in the GitHub repository.",
   "image": {
     "src": "../../images/favicon.png",
     "alt": "Gatsby Logo"
   },
   "socialProfiles": {
-    "from": ["LinkedIn", "Medium", "Github", "Mail"],
+    "from": ["LinkedIn", "Github", "Mail"],
     "showIcons": true
   }
 }

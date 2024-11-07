@@ -1,0 +1,19 @@
+.HistoryItemBlack, .HistoryItemWhite{
+    border-radius: 4px;
+    border-color: white;
+    border-width: 5px;
+    text-align: center;
+}
+
+.HistoryItemBlack {
+    background-color: #2a2a2a;
+    color: #cdcdcd;
+}
+.HistoryItemWhite {
+    background-color: #cdcdcd;
+    color: #2a2a2a;
+  }
+
+header{
+    background-color: #2a2a2a;
+}

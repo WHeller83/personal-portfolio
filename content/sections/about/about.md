@@ -3,12 +3,8 @@ imageSrc: "../../images/charles-deluvio-DgoyKNgPiFQ-unsplash.jpg"
 imageAlt: "About Gatsby Theme Portfolio Minimal"
 ---
 
-Portfolio Minimal is a Gatsby Theme that creates outstanding one-pages portfolio within minutes!
+For my entire life, I've had a fascination with the countless ways computers and technology shape our everyday lives. From connecting with people across the globe to creating unique and impossible digital worlds, the possibilities seemed endless. So I decided, when I went to college, to earn my Bachelor's in Computer Science in 2022 and my Master's in 2023. I have since had numerous experiences designing, developing, and deploying software solutions for modern problems.
 
-It has predefined sections for your bio, skills, projects, and contact details. If you are a writer on Medium, you can integrate your latest articles in a distinct section as well. While building the theme, I tried to keep the setup as simple as possible while keeping everything configurable if you like to.
+In many of my professional projects I have taken lead roles, single-handedly communicating with business-end employees, organizing system architecture, implementing solutions, and providing continuous delivery. These projects range from redesigning in-house websites with new databases, web APIs, and features, developing online VR solutions, and inventing new methods to clean and combine massive geographical datasests.
 
-Using theme composition, you can easily customize the CSS theme to your own preferences - e.g. change colors, fonts, etc.
-
-Last but not least, it has some cool features you can opt-in to: Dark Mode, Splash Screen, Cookie Banner, and more to find out :)
-
-Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank" rel="nofollow noopener noreferrer" aria-label="External Link"><u>Charles Deluvio</u></a> on Unsplash
+Outside of professional settings, I continuously expand my development knowledge with a variety of passion projects. One of which is this site made using React and Gatsby. Check out the <a rel="nofollow noopener noreferrer" aria-label="External Link" href="/guestbook"><u>guest book</u></a> to see React in action! Using Python 3, I have been continuously developing an administration bot for Telegram that can send invites, save and retrieve chat messages, and send reminders using a fully-custom system. Additionally, .NET has been on my radar, exploring the uses of MAUI and ASP.

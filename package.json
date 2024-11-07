@@ -12,12 +12,16 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "chess.js": "^1.0.0-beta.8",
     "gatsby": "^5.0.1",
     "gatsby-theme-portfolio-minimal": "latest",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-chessboard": "^4.7.2",
+    "react-dom": "^18.2.0",
+    "react-window": "^1.8.10",
+    "socket.io-client": "^4.8.1"
   },
-  "author": "Konstantin Münster <mail@konstantin.digital>",
+  "author": "William Heller <willheller00@gmail.com>",
   "license": "0BSD",
   "starter-name": "gatsby-starter-portfolio-minimal-theme",
   "homepage": "https://github.com/konstantinmuenster/gatsby-starter-portfolio-minimal-theme#readme",
@@ -38,6 +42,8 @@
     "minimal",
     "animations",
     "dark-mode",
-    "gdpr-compliant"
+    "gdpr-compliant",
+    "developer",
+    "backend"
   ]
 }
