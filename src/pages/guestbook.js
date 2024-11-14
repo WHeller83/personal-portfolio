@@ -37,14 +37,21 @@ export default function IndexPage() {
 
   useEffect(() => {
     // Socket IO Setup
-    socket = io(process.env.SERVER);
+    // TODO: Add these as ENV variables
+    // socket = io("localhost:5000");
+    socket = io("https://chess.willheller.dev");
 
     socket.on("current_game", ({ currentFen, currentTurn, history, game_id }) => {
       console.log(currentFen);
       setGame(new Chess(currentFen));
+      setMovestr("");
+      setMoveFrom("");
+      setMoveTo("");
+      setOptionSquares({});
       setTurn(currentTurn);
       setGuestbook(history);
       setGameID(game_id);
+      setAllowMoves(true);
     });
 
     socket.on("connect", () => {
