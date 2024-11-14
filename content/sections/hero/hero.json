@@ -1,7 +1,7 @@
 {
   "intro": "Hello!",
   "heroPhoto": {
-    "src": "../../images/react.png",
+    "src": "../../images/will-heller.png",
     "alt": "My Photo"
   },
 
@@ -13,10 +13,10 @@
   "title": "I'm Will,",
   "subtitle": {
     "prefix": "and I specialize in ",
-    "highlight": "backend software development",
+    "highlight": "software development",
     "suffix": "."
   },
-  "description": "Browse Through my online portfolio to learn more about me.",
+  "description": "Browse through my online portfolio to learn more about me. This site is still a work in progress, but I plan on adding more features and posts soon! Please feel free to sign the guestbook!",
   "socialProfiles": {
     "from": ["LinkedIn", "Github", "Mail"],
     "showIcons": false

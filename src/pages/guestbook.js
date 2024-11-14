@@ -4,8 +4,24 @@ import { Section, Page, Seo } from "gatsby-theme-portfolio-minimal";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { FixedSizeList as List } from "react-window";
+import { Profanity } from "@2toad/profanity";
 import io from "socket.io-client";
 import "./styles.css";
+
+let socket = null;
+
+let profanityFilter = new Profanity({
+  languages: ['en', 'es'],
+  wholeWord: true,
+});
+
+profanityFilter.addWords(['suck', 'hell']);
+profanityFilter.removeWords(['butt', 'butts']);
+
+
+function Loading() {
+  return <p>Now connecting...</p>;
+}
 
 export default function IndexPage() {
   const [game, setGame] = useState(new Chess());
@@ -16,11 +32,33 @@ export default function IndexPage() {
   const [moveTo, setMoveTo] = useState(null);
   const [guestbook, setGuestbook] = useState([]);
   const [optionSquares, setOptionSquares] = useState({});
+  const [connected, setConnected] = useState(false);
+  const [gameID, setGameID] = useState(false);
 
-  // Socket IO Setup
   useEffect(() => {
-    const socket = io('localhost:5000');
-  }, [])
+    // Socket IO Setup
+    socket = io(process.env.SERVER);
+
+    socket.on("current_game", ({ currentFen, currentTurn, history, game_id }) => {
+      console.log(currentFen);
+      setGame(new Chess(currentFen));
+      setTurn(currentTurn);
+      setGuestbook(history);
+      setGameID(game_id);
+    });
+
+    socket.on("connect", () => {
+      setConnected(true);
+    });
+    socket.on("disconnect", () => {
+      setConnected(false);
+    });
+
+    return () => {
+      socket.disconnect();
+      setConnected(false);
+    };
+  }, []);
 
   const Row = ({ index, style }) => {
     // Get a list of moves with the most recent first
@@ -29,9 +67,9 @@ export default function IndexPage() {
     return (
       <div
         className={
-          gameHistory.move.color === "w"
+          `${gameHistory.move.color === "w"
             ? "HistoryItemWhite"
-            : "HistoryItemBlack"
+            : "HistoryItemBlack"}`
         }
         style={style}
       >
@@ -86,9 +124,19 @@ export default function IndexPage() {
     const move = game.history({ verbose: true })[game.history().length - 1];
 
     var gbCopy = [...guestbook];
+    const enteredName = formJson["guest-name"]
+      ? formJson["guest-name"]
+      : "anonymous";
+
+    if (profanityFilter.exists(enteredName)){
+      form.reset();
+      return;
+    }
+
     gbCopy.push({
-      name: formJson["guest-name"] ? formJson["guest-name"] : "anonymous",
+      name: enteredName,
       move: move,
+      fen: game.fen()
     });
     setGuestbook(gbCopy);
 
@@ -96,6 +144,8 @@ export default function IndexPage() {
     setMovestr("");
     setTurn(game.turn());
     form.reset();
+
+    socket.emit("submit_move", { name: enteredName, move: move });
   }
 
   function getMoveOptions(square) {
@@ -190,55 +240,68 @@ export default function IndexPage() {
         <Section>
           <h1>Sign the Guest(chess)Book!</h1>
           <p>Make a move and sign your name (or stay anonymous 🥸)!</p>
-          <table style={{ width: "100%", height: "100%" }}>
-            <tbody>
-              <tr>
-                <td style={{ width: "40%", verticalAlign: "top" }}>
-                  <h3>
-                    It is currently <u>{turn === "w" ? "White" : "Black"}'s</u>{" "}
-                    turn!
-                  </h3>
-                  <p>History:</p>
-                  <List
-                    className="History"
-                    itemCount={guestbook.length}
-                    itemSize={30}
-                    height={200}
-                    width={250}
-                  >
-                    {Row}
-                  </List>
-                  <form onSubmit={submitMove}>
-                  { allowMoves && <p>Drag or click a piece on the chess board to move it!</p> }
-                  { !allowMoves && 
-                  <> 
-                    <input name="guest-name" placeholder="Name"></input> 
-                    <button type="submit">Submit</button>
-                    <p>Click to submit your move and name!</p> 
-                  </>}
-                  </form>
-                </td>
-                <td style={{ width: "60%" }}>
-                  <Chessboard
-                    position={game.fen()}
-                    onPieceDrop={onDrop}
-                    onSquareClick={onSquareClick}
-                    arePiecesDraggable={allowMoves}
-                    customBoardStyle={{
-                      borderRadius: "4px",
-                    }}
-                    customSquareStyles={{
-                      ...optionSquares,
-                    }}
-                  />
-                  <button onClick={onUndo} hidden={allowMoves}>
-                    Cancel
-                  </button>
-                  {movestr && <h4>Your move: {movestr}</h4>}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+          {!connected && <Loading />}
+          {connected && (
+            <table style={{ width: "100%", height: "100%" }}>
+              <tbody>
+                <tr>
+                  <td style={{ width: "40%", verticalAlign: "top" }}>
+                    <h2>
+                      <u>Game {gameID}</u>
+                    </h2>
+                    <h3>
+                      It is currently{" "}
+                      <u>{turn === "w" ? "White" : "Black"}'s</u> turn!
+                    </h3>
+                    <p>History:</p>
+                    <List
+                      className="History"
+                      itemCount={guestbook.length}
+                      itemSize={30}
+                      height={200}
+                      width={250}
+                      onScroll={(_) => {}}
+                    >
+                      {Row}
+                    </List>
+                    <form onSubmit={submitMove}>
+                      {allowMoves && (
+                        <p>
+                          Drag or click a piece on the chess board to move it!
+                        </p>
+                      )}
+                      {!allowMoves && (
+                        <>
+                          <input name="guest-name" placeholder="Name"></input>
+                          <button type="submit">Submit</button>
+                          <p>Click to submit your move and name!</p>
+                        </>
+                      )}
+                    </form>
+                  </td>
+                  <td style={{ width: "60%" }}>
+                    <Chessboard
+                      position={game.fen()}
+                      onPieceDrop={onDrop}
+                      onSquareClick={onSquareClick}
+                      arePiecesDraggable={allowMoves}
+                      customBoardStyle={{
+                        borderRadius: "4px",
+                      }}
+                      customSquareStyles={{
+                        ...optionSquares,
+                      }}
+                    />
+                    <button onClick={onUndo} hidden={allowMoves}>
+                      Cancel
+                    </button>
+                    {movestr && <h4>Your move: {movestr}</h4>}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </Section>
       </Page>
     </>

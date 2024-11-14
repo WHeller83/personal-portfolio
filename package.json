@@ -12,6 +12,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@2toad/profanity": "^3.0.1",
     "chess.js": "^1.0.0-beta.8",
     "gatsby": "^5.0.1",
     "gatsby-theme-portfolio-minimal": "latest",
